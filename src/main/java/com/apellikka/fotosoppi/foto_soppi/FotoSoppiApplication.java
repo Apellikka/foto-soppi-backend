@@ -19,7 +19,7 @@ public class FotoSoppiApplication {
 			@Override
 			public void addCorsMappings(@SuppressWarnings("null") CorsRegistry registry) {
 				registry.addMapping("/images/**")
-					.allowedOrigins("http://localhost:5173")
+					.allowedOrigins("*")
 					.allowedMethods("GET", "OPTIONS");
 			}
 		};
