@@ -34,6 +34,7 @@ build/
 .vscode/
 
 ### app properties ###
+.env
 application.properties
 application-dev.properties
 application-prod.properties
