@@ -44,11 +44,8 @@ public class ImageController {
     @Value("${spring.profiles.active}")
     private String activeProfile;
 
-    @Value("${IMAGE_BASE_URL_DEV}")
-    private String baseDirectoryDev;
-
-    @Value("${IMAGE_BASE_URL_PROD}")
-    private String baseDirectoryProd;
+    @Value("${IMAGE_BASE_URL}")
+    private String baseDirectory;
 
     public ImageController(ImageRepository imageRepository) 
     {
@@ -72,7 +69,7 @@ public class ImageController {
                 new ResponseStatusException(HttpStatus.NOT_FOUND, "Image ID not found from database!"));
     
         if(activeProfile.equals("dev")) {
-            Path imagePath = Paths.get(baseDirectoryDev + image.getPath());
+            Path imagePath = Paths.get(baseDirectory + image.getPath());
             Resource resource = getResourceFromPath(imagePath);
             String contentType = getContentType(imagePath);
 
@@ -84,7 +81,7 @@ public class ImageController {
         
         // For production environment
         else {
-            String imagePath = baseDirectoryProd + image.getPath();
+            String imagePath = baseDirectory + image.getPath();
             Resource resource = getResourceFromPath(imagePath);
             
             return ResponseEntity
