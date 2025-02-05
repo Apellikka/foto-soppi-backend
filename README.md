@@ -1,6 +1,7 @@
 Foto-Soppi is a React.js and Java Spring Boot image gallery application. Images are loaded automatically as the user scrolls down until there are no more pictures left to load from the remote resource. Utilizes the MVC-architectural pattern.
 
 An example screenshot from home page and login page.
-![FotoSoppiShot](https://github.com/user-attachments/assets/7c2d14da-cb2c-491e-af6e-eabed2e3adcb)
+![FotoSoppiShot](https://github.com/user-attachments/assets/d672d6e0-0944-4499-9a8a-48c8d717ff39)
 
-![soppilogin](https://github.com/user-attachments/assets/1d7134f2-b4d5-4c68-97a8-665b8df2a74d)
+
+![soppilogin](https://github.com/user-attachments/assets/1001cc2d-f202-4dec-8796-382485b25eb1)
