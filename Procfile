@@ -1,1 +1,1 @@
-web: java -Dspring.profiles.active=prod -Dserver.port=$PORT -jar target/foto-soppi-0.0.1.jar
+web: java -Dspring.profiles.active=prod -Dserver.port=$PORT -jar target/*.jar
