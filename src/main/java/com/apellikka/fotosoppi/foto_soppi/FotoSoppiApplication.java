@@ -21,6 +21,9 @@ public class FotoSoppiApplication {
 				registry.addMapping("/images/**")
 					.allowedOrigins("*")
 					.allowedMethods("GET", "OPTIONS");
+				registry.addMapping("/users/**")
+					.allowedOrigins("*")
+					.allowedMethods("POST", "GET", "OPTIONS");
 			}
 		};
 	}
