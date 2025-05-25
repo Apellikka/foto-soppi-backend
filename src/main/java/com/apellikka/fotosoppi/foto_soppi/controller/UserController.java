@@ -4,9 +4,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.apellikka.fotosoppi.foto_soppi.repository.UserRepository;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/users")
 public class UserController {
     
     private final UserRepository userRepository;
@@ -15,5 +18,10 @@ public class UserController {
         this.userRepository = userRepository;
     }
 
-
+    @PostMapping("/register")
+    public String postMethodName(@RequestBody String entity) { 
+        System.out.println("Entity received: " + entity);
+        return entity;
+    }
+    
 }
