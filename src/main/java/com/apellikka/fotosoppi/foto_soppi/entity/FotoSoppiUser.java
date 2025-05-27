@@ -22,20 +22,19 @@ public class FotoSoppiUser implements UserDetails {
     @Column(unique = true)
     private String username;
     private String password;
-    private String email;
 
     private FotoSoppiUser() {};
 
-    public FotoSoppiUser(String username, String password, String email) {
+    public FotoSoppiUser(String username, String password) {
         this.username = username;
-        this.password = password;
-        this.email = email;
+        this.password = password;    
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         throw new UnsupportedOperationException("Unimplemented method 'getAuthorities'");
     }
+
     @Override
     public String getPassword() {
         return this.password;
@@ -43,9 +42,5 @@ public class FotoSoppiUser implements UserDetails {
     @Override
     public String getUsername() {
         return this.username;    
-    }
-
-    public String getEmail() {
-        return this.email;
     }
 }
