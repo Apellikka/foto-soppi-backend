@@ -36,6 +36,8 @@ public class UserController {
         FotoSoppiUser user = objectMapper.readValue(entity, FotoSoppiUser.class);
         user.setPassword(passwordEncoder, user.getPassword());
         System.out.println("User object created: " + user.getPassword());
+        userRepository.save(user);
+        System.out.println("User saved to repository: " + user.getUsername());
         return entity;
     }
     
