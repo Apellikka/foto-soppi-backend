@@ -4,6 +4,7 @@ import java.util.Collection;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -28,6 +29,10 @@ public class FotoSoppiUser implements UserDetails {
     public FotoSoppiUser(String username, String password) {
         this.username = username;
         this.password = password;    
+    }
+
+    public void setPassword(PasswordEncoder pe, String password) {
+      this.password = pe.encode(password);  
     }
 
     @Override
