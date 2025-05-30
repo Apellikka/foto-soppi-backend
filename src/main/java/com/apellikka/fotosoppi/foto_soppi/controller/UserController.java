@@ -26,9 +26,8 @@ public class UserController {
     @PostMapping("/register")
     public String postMethodName(@RequestBody String entity){ 
         System.out.println("Entity received: " + entity);
-        userService.addUser(entity);
-        // WHY IS THIS RETURNED?
-        return entity;
+        String response = userService.addUser(entity);
+        return response;
     }
     
 }

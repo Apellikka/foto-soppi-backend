@@ -40,15 +40,14 @@ public class UserService {
         
         if(userExists(user.getUsername())) {
             System.out.println("User already exists: " + user.getUsername());
-            throw new IllegalArgumentException("User already exists: " + user.getUsername());
-            // Redirect or return an error response
+            return "User already exists: " + user.getUsername();
         } 
         else {
             user.setPassword(passwordEncoder.encode(user.getPassword()));
             userRepository.save(user);
             System.out.println("User object created: " + user.getPassword()); 
             System.out.println("User saved to repository: " + user.getUsername());
-            return user.getUsername();
+            return "User created successfully: " + user.getUsername();
         }
     }
 
