@@ -23,6 +23,7 @@ public class UserService {
     }
 
     public UserApiResponse addUser(String userJSON) {
+        // TODO MAYBE: Validate password strength and other user details before saving????
         ObjectMapper objectMapper = new ObjectMapper();
         FotoSoppiUser user = null;
         
@@ -49,7 +50,7 @@ public class UserService {
         }
     }
 
-    public boolean userExists(String username) {
+    private boolean userExists(String username) {
         return userRepository.findByUsername(username).isPresent();
     } 
 }

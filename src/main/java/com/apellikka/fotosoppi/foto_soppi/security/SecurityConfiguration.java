@@ -35,6 +35,8 @@ public class SecurityConfiguration {
                 .requestMatchers("/images/**").permitAll()
                 .requestMatchers("/users/**").permitAll()
                 .anyRequest().authenticated()
+                // TODO: Configure CSRF for production use
+                // TODO: SessionManagement for JWT
             );
 
         return http.build();
