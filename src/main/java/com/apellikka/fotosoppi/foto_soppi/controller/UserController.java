@@ -24,12 +24,13 @@ public class UserController {
     @PostMapping("/register")
     public ResponseEntity<UserApiResponse> registerNewUser(@RequestBody String entity){ 
         System.out.println("Entity received: " + entity);
-        UserApiResponse response = userService.addUser(entity);
+        UserApiResponse response = userService.registerUser(entity);
         return ResponseEntity.status(response.getStatusCode()).body(response);
     }
 
     @PostMapping("/login")
-    public ResponseEntity<UserApiResponse> login(@RequestBody String entity) { 
+    public ResponseEntity<UserApiResponse> login(@RequestBody String entity) {
+        UserApiResponse response = userService.authenticate(entity);
         return ResponseEntity.ok(new UserApiResponse(
             "Login not implemented yet", 
             "Login functionality is not yet available.", 

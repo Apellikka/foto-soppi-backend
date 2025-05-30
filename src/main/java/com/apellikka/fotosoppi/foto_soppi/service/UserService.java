@@ -1,6 +1,9 @@
 package com.apellikka.fotosoppi.foto_soppi.service;
 
+import org.springframework.boot.autoconfigure.neo4j.Neo4jProperties.Authentication;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -16,13 +19,19 @@ public class UserService {
     
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
+    private final AuthenticationManager authenticationManager;
 
-    public UserService(PasswordEncoder passwordEncoder, UserRepository userRepository) {
+    public UserService(
+        PasswordEncoder passwordEncoder, 
+        UserRepository userRepository, 
+        AuthenticationManager authenticationManager) {
+        
+            this.authenticationManager = authenticationManager;
         this.passwordEncoder = passwordEncoder;
         this.userRepository = userRepository;
     }
 
-    public UserApiResponse addUser(String userJSON) {
+    public UserApiResponse registerUser(String userJSON) {
         // TODO MAYBE: Validate password strength and other user details before saving????
         ObjectMapper objectMapper = new ObjectMapper();
         FotoSoppiUser user = null;
@@ -48,6 +57,18 @@ public class UserService {
             System.out.println("User saved to repository: " + user.getUsername());
             return new UserApiResponse(user.getUsername(), "User created successfully!", HttpStatus.CREATED.value());
         }
+    }
+
+    public UserApiResponse authenticate(String userJSON) {        
+       authenticationManager.authenticate(
+            new UsernamePasswordAuthenticationToken(userJSON, userJSON)
+        );
+
+        return new UserApiResponse(
+            "Login not implemented yet", 
+            "Login functionality is not yet available.", 
+            HttpStatus.OK.value()
+        );
     }
 
     private boolean userExists(String username) {
