@@ -1,6 +1,5 @@
 package com.apellikka.fotosoppi.foto_soppi.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -22,7 +21,7 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public String addUser(String userJSON) {
+    public UserApiResponse addUser(String userJSON) {
         // Convert the JSON string to FotoSoppiUser object
         // TODO: Check if the user already exists in the repository
         // then use a service to salt and hash the password and save to db.
@@ -32,22 +31,22 @@ public class UserService {
             user = objectMapper.readValue(userJSON, FotoSoppiUser.class);
         } catch (JsonMappingException e) {
             System.err.println("Error mapping JSON to FotoSoppiUser: " + e.getMessage());
-            e.printStackTrace();
+            return new UserApiResponse(null, "Invalid JSON format!");
         } catch (JsonProcessingException e) {
             System.err.println("Error processing JSON: " + e.getMessage());
-            e.printStackTrace();
+            return new UserApiResponse(null, "Invalid JSON format!");
         }
         
         if(userExists(user.getUsername())) {
             System.out.println("User already exists: " + user.getUsername());
-            return "User already exists: " + user.getUsername();
+            return new UserApiResponse(user.getUsername(), "User already exists!");
         } 
         else {
             user.setPassword(passwordEncoder.encode(user.getPassword()));
             userRepository.save(user);
-            System.out.println("User object created: " + user.getPassword()); 
+            System.out.println("User object created: password: " + user.getPassword()); 
             System.out.println("User saved to repository: " + user.getUsername());
-            return "User created successfully: " + user.getUsername();
+            return new UserApiResponse(user.getUsername(), "User created successfully!");
         }
     }
 

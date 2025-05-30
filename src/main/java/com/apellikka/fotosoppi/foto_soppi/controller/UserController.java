@@ -3,12 +3,10 @@ package com.apellikka.fotosoppi.foto_soppi.controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.apellikka.fotosoppi.foto_soppi.entity.FotoSoppiUser;
+import com.apellikka.fotosoppi.foto_soppi.service.UserApiResponse;
 import com.apellikka.fotosoppi.foto_soppi.service.UserService;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -24,10 +22,9 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public String postMethodName(@RequestBody String entity){ 
+    public ResponseEntity<UserApiResponse> postMethodName(@RequestBody String entity){ 
         System.out.println("Entity received: " + entity);
-        String response = userService.addUser(entity);
-        return response;
+        UserApiResponse response = userService.addUser(entity);
+        return ResponseEntity.status(response.getStatusCode()).body(response);
     }
-    
 }
