@@ -4,13 +4,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.apellikka.fotosoppi.foto_soppi.entity.FotoSoppiUser;
-import com.apellikka.fotosoppi.foto_soppi.repository.UserRepository;
+import com.apellikka.fotosoppi.foto_soppi.service.UserService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -19,25 +17,17 @@ import org.springframework.web.bind.annotation.RequestBody;
 @RequestMapping("/users")
 public class UserController {
     
-    private final UserRepository userRepository;
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+    private final UserService userService;
 
-    public UserController(UserRepository userRepository) {
-        this.userRepository = userRepository;
+    public UserController(UserService userService) {
+        this.userService = userService;
     }
 
     @PostMapping("/register")
-    public String postMethodName(@RequestBody String entity) throws JsonMappingException, JsonProcessingException { 
+    public String postMethodName(@RequestBody String entity){ 
         System.out.println("Entity received: " + entity);
-        // Convert the JSON string to FotoSoppiUser object
-        // then use a service to salt and hash the password and save to db.
-        ObjectMapper objectMapper = new ObjectMapper();
-        FotoSoppiUser user = objectMapper.readValue(entity, FotoSoppiUser.class);
-        user.setPassword(passwordEncoder, user.getPassword());
-        System.out.println("User object created: " + user.getPassword());
-        userRepository.save(user);
-        System.out.println("User saved to repository: " + user.getUsername());
+        userService.addUser(entity);
+        // WHY IS THIS RETURNED?
         return entity;
     }
     

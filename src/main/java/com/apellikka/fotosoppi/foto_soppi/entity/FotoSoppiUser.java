@@ -31,8 +31,8 @@ public class FotoSoppiUser implements UserDetails {
         this.password = password;    
     }
 
-    public void setPassword(PasswordEncoder pe, String password) {
-      this.password = pe.encode(password);  
+    public void setPassword(String password) {
+      this.password = password; 
     }
 
     @Override
