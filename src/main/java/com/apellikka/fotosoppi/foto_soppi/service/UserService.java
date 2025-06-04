@@ -1,9 +1,9 @@
 package com.apellikka.fotosoppi.foto_soppi.service;
 
-import org.springframework.boot.autoconfigure.neo4j.Neo4jProperties.Authentication;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -25,8 +25,8 @@ public class UserService {
         PasswordEncoder passwordEncoder, 
         UserRepository userRepository, 
         AuthenticationManager authenticationManager) {
-        
-            this.authenticationManager = authenticationManager;
+    
+        this.authenticationManager = authenticationManager;
         this.passwordEncoder = passwordEncoder;
         this.userRepository = userRepository;
     }
@@ -59,14 +59,33 @@ public class UserService {
         }
     }
 
-    public UserApiResponse authenticate(String userJSON) {        
-       authenticationManager.authenticate(
-            new UsernamePasswordAuthenticationToken(userJSON, userJSON)
+    public UserApiResponse authenticate(String userJSON) {
+        ObjectMapper objectMapper = new ObjectMapper();
+        FotoSoppiUser user = null;
+        try {
+            user = objectMapper.readValue(userJSON, FotoSoppiUser.class);
+        } catch (JsonMappingException e) {
+            System.err.println("Error mapping JSON to FotoSoppiUser: " + e.getMessage());
+            return new UserApiResponse(null, "Invalid JSON format!", HttpStatus.BAD_REQUEST.value());
+        } catch (JsonProcessingException e) {
+            System.err.println("Error processing JSON: " + e.getMessage());
+            return new UserApiResponse(null, "Invalid JSON format!", HttpStatus.BAD_REQUEST.value());
+        }
+
+        System.out.println("Authenticating user: " + user.getUsername());
+
+        Authentication auth = authenticationManager.authenticate(
+            new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword())
         );
 
+        System.out.println("test1: " + auth.getPrincipal());
+        System.out.println("test2: " + auth.getCredentials());
+        System.out.println("test3: " + auth.getAuthorities());
+        System.out.println("test4: " + auth.isAuthenticated());
+
         return new UserApiResponse(
-            "Login not implemented yet", 
-            "Login functionality is not yet available.", 
+            user.getUsername(),
+            "User authenticated successfully!",
             HttpStatus.OK.value()
         );
     }

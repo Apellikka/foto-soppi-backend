@@ -31,10 +31,7 @@ public class UserController {
     @PostMapping("/login")
     public ResponseEntity<UserApiResponse> login(@RequestBody String entity) {
         UserApiResponse response = userService.authenticate(entity);
-        return ResponseEntity.ok(new UserApiResponse(
-            "Login not implemented yet", 
-            "Login functionality is not yet available.", 
-            200));  
+        return ResponseEntity.status(response.getStatusCode()).body(response);
     }
     
 }
