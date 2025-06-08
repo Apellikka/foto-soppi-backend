@@ -30,7 +30,7 @@ public class UserController {
 
     @PostMapping("/login")
     public ResponseEntity<UserApiResponse> login(@RequestBody String entity) {
-        UserApiResponse response = userService.authenticate(entity);
+        UserApiResponse response = userService.authenticateUser(entity);
         return ResponseEntity.status(response.getStatusCode()).body(response);
     }
     

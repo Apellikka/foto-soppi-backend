@@ -31,8 +31,10 @@ public class SecurityConfiguration {
     }
 
     @Bean
-    SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    SecurityFilterChain securityFilterChain(HttpSecurity http, CustomAuthenticationEntryPoint authEntryPoint) throws Exception {
         http
+            .exceptionHandling((exceptionHandling) -> 
+                exceptionHandling.authenticationEntryPoint(authEntryPoint))
             .csrf((csrf) -> csrf.disable())
             .authorizeHttpRequests((authorize) -> authorize
                 .requestMatchers("/images/**").permitAll()
