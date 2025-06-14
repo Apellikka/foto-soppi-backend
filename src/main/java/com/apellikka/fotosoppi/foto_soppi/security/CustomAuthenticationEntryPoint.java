@@ -22,6 +22,8 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
 
             String jsonResponse = "{ \"error\": \"Authentication failed!\", \"message\": \"" + authException.getMessage() + "\" }";
+            System.out.println("Authentication failed!");
+            System.out.println("Error message: " + authException.getMessage());
             response.getWriter().write(jsonResponse);
     }
 }

@@ -3,6 +3,7 @@ package com.apellikka.fotosoppi.foto_soppi.service;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -51,8 +52,7 @@ public class UserService {
         } 
         else {
             user.setPassword(passwordEncoder.encode(user.getPassword()));
-            userRepository.save(user);
-            System.out.println("User object created: password: " + user.getPassword()); 
+            userRepository.save(user); 
             System.out.println("User saved to repository: " + user.getUsername());
             return new UserApiResponse(user.getUsername(), "User created successfully!", HttpStatus.CREATED.value());
         }
@@ -72,10 +72,13 @@ public class UserService {
         }
 
         System.out.println("Authenticating user: " + user.getUsername());
-
-        authenticationManager.authenticate(
+        Authentication auth = authenticationManager.authenticate(
             new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword())
         );
+
+        if(auth.isAuthenticated()) {
+            System.out.println("User authenticated successfully: " + user.getUsername());
+        } 
 
         // If authentication succeeds, this response is returned to user. 
         // If authentication fails, an exception is thrown and handled by the
