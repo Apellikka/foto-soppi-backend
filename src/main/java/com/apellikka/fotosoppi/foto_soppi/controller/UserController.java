@@ -22,8 +22,8 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<UserApiResponse> registerNewUser(@RequestBody String entity){ 
-        System.out.println("Entity received: " + entity);
+    public ResponseEntity<UserApiResponse> registerNewUser(@RequestBody String entity){
+        System.out.println("Registering new user!"); 
         UserApiResponse response = userService.registerUser(entity);
         return ResponseEntity.status(response.getStatusCode()).body(response);
     }
