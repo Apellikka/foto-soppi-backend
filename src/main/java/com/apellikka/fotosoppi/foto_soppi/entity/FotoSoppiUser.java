@@ -4,7 +4,6 @@ import java.util.Collection;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -24,6 +23,10 @@ public class FotoSoppiUser implements UserDetails {
     private String username;
     private String password;
 
+    // Default constructor for JPA. Needs to be there for Hibernate to work properly.
+    // If you don't have this, you might get an error like 
+    // "No default constructor for entity: com.apellikka.fotosoppi.foto_soppi.entity.FotoSoppiUser"
+    @SuppressWarnings("unused")
     private FotoSoppiUser() {};
 
     public FotoSoppiUser(String username, String password) {
