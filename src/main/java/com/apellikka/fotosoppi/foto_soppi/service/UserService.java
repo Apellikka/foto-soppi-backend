@@ -2,6 +2,7 @@ package com.apellikka.fotosoppi.foto_soppi.service;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -33,6 +34,7 @@ public class UserService {
 
     public UserApiResponse registerUser(String userJSON) {
         // TODO MAYBE: Validate password strength and other user details before saving????
+        // TODO: Make sure user is not empty or null before processing
         ObjectMapper objectMapper = new ObjectMapper();
         FotoSoppiUser user = null;
         
@@ -71,19 +73,17 @@ public class UserService {
             return new UserApiResponse(null, "Invalid JSON format!", HttpStatus.BAD_REQUEST.value());
         }
 
-        System.out.println("Authenticating user: " + user.getUsername());
-        Authentication auth = authenticationManager.authenticate(
-            new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword())
-        );
-
-        if(auth.isAuthenticated()) {
-            System.out.println("User authenticated successfully: " + user.getUsername());
+        
+        try {
+            System.out.println("Authenticating user: " + user.getUsername());
+            authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword())
+            );
+        } catch (BadCredentialsException e) {
+            System.err.println("Authentication failed for user: " + user.getUsername() + " - ErrorMessage: " + e.getMessage());
+            return new UserApiResponse(user.getUsername(), "Invalid username or password!", HttpStatus.UNAUTHORIZED.value());
         } 
-
-        // If authentication succeeds, this response is returned to user. 
-        // If authentication fails, an exception is thrown and handled by the
-        // CustomAuthenticationEntryPoint class, which returns a 401 Unauthorized response.
-        // CustomAuthEntryPoint is a Spring Security feature that automatically handles authentication failures.
+        System.out.println("User authenticated successfully: " + user.getUsername());  
         return new UserApiResponse(
         user.getUsername(),
         "User authenticated successfully!",
