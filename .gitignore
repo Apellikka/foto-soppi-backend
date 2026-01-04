@@ -33,10 +33,12 @@ build/
 ### VS Code ###
 .vscode/
 
+### vim ###
+.vim/
+
 ### app properties ###
 .env
 application.properties
 application-dev.properties
 application-prod.properties
 
-localDev.txt
